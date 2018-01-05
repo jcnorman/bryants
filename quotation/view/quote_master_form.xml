@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<form col="6" string="Quotation">
+    <notebook>
+        <page string="Quotation" id="quotation">
+            <group id="party_group" colspan="6">
+                <label name="party" colspan="1"/>
+                <field name="party" colspan="1"/>
+                <label name="quote_date" colspan="1"/>
+                <field name="quote_date" colspan="1"/>
+                <label name="quote_by" colspan="1"/>
+                <field name="quote_by" colspan="1"/>
+                <newline/>
+                <label name="reference" colspan="1"/>
+                <field name="reference" colspan="3"/>
+            </group>
+            <group id="payment_group" colspan="4">
+                <label name="payment_term"/>
+                <field name="payment_term"/>
+                <label name="payment_method"/>
+                <field name="payment_method"/>
+            </group>
+            <newline/>
+            <group id="quote_lines" colspan="6">
+                <field name="quote_lines" colspan="6"
+                    view_ids="quotation.quotation_view_tree"
+                    yexpand="1"/>
+            </group>
+
+            <newline/>
+            <group id="invoice_lines" colspan="6">
+
+                <field name="invoices" colspan="6"
+                    view_ids="account_invoice.invoice_view_tree"
+                    yexpand="1"/>
+
+            </group>
+
+            <button string="Cancel" name="cancel" icon="tryton-cancel" colspan="1"/>
+            <button string="Draft" name="draft" icon="tryton-clear" colspan="1"/>
+            <button string="Quote" name="quotation" icon="tryton-go-next" colspan="1"/>
+            <field name="state" colspan="1"/>
+
+        </page>
+        <page string="Other Info" id="other">
+            <separator name="comment" colspan="4"/>
+            <field name="comment" colspan="4" />
+            <separator name="internal_comment" colspan="4"/>
+            <field name="internal_comment" colspan="4"/>
+            <separator name = "driver_comment" colspan = "4"/>
+            <field name="driver_comment" colspan="4"/>
+
+        </page>
+    </notebook>
+</form>

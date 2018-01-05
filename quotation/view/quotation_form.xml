@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+
+
+<form>
+    <!--
+    <notebook colspan="6">
+    <page id="quotation" string="Quotation">
+    -->
+    <group id="select_group" string="Quoting" colspan = "6">
+        <label name="deck_quote" colspan="1"/>
+        <field name="deck_quote"/>
+        <label name="fence_quote"/>
+        <field name="fence_quote"/>
+        <label name="sfhome_quote"/>
+        <field name="sfhome_quote"/>
+        <label name="th_quote"/>
+        <field name="th_quote"/>
+        <label name="gutter_quote"/>
+        <field name="gutter_quote"/>
+    </group>
+    <group id="deck_group" string="Deck" colspan="6" states = "{'invisible': Not(Bool(Eval('deck_quote')))}">
+        <label name="deck_width" colspan="1"/>
+        <field name="deck_width" colspan="1"/>
+        <label name="deck_length" colspan="1"/>
+        <field name="deck_length" colspan="1"/>
+        <label name="deck_surface" colspan="1"/>
+        <field name="deck_surface" colspan="1"/>
+        <label name="deck_steps" colspan="1"/>
+        <field name="deck_steps" colspan="1"/>
+        <label name="lattice_height" colspan="1"/>
+        <field name="lattice_height" colspan="1"/>
+        <label name="deck_treatment" colspan="1"/>
+        <field name="deck_treatment" colspan="1"/>
+        <label name="algae_removal" colspan="1"/>
+        <field name="algae_removal" colspan="1"/>
+        <label name="strip_color" colspan="1"/>
+        <field name="strip_color" colspan="1"/>
+        <label name="reapply_solid" colspan="1"/>
+        <field name="reapply_solid" colspan="1"/>
+        <label name="reapply_2_tone" colspan="1"/>
+        <field name="reapply_2_tone" colspan="1"/>
+        <label name="wax" colspan = "1"/>
+        <field name="wax" colspan = "1"/>
+    </group>
+    <group id = "sf_home" string="Single Family Home" colspan="6" states = "{'invisible': Not(Bool(Eval('sfhome_quote')))}">
+        <label name="home_sqft"/>
+        <field name="home_sqft"/>
+        <label name="wood_siding"/>
+        <field name="wood_siding"/>
+    </group>
+    <group id="townhouse" string="Townhouse"  colspan="6" states = "{'invisible': Not(Bool(Eval('th_quote')))}">
+        <label name="townhouse_unit"/>
+        <field name="townhouse_unit"/>
+        <label name="townhouse_levels"/>
+        <field name="townhouse_levels"/>
+    </group>
+    <group id="fencing" string="Fencing" colspan="6" states = "{'invisible': Not(Bool(Eval('fence_quote')))}">
+        <label name="fencing_posts"/>
+        <field name="fencing_posts"/>
+        <label name="fencing_height"/>
+        <field name="fencing_height"/>
+        <label name="fencing_sides"/>
+        <field name="fencing_sides"/>
+        <label name="fencing_treatment"/>
+        <field name="fencing_treatment"/>
+    </group>
+    <group col="7" colspan="2" id="buttons">
+        <button name="save" string="Save"
+            icon="tryton-save"/>
+    </group>
+</form>

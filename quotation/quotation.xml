@@ -1,0 +1,377 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="res.group" id="group_quotation">
+            <field name="name">Quotation</field>
+        </record>
+        <record model="res.group" id="group_quotation_admin">
+            <field name="name">Quotations Administrator</field>
+        </record>
+
+        <record model="res.user-res.group" id="user_admin_group_quotation">
+            <field name="user" ref="res.user_admin"/>
+            <field name="group" ref="group_quotation"/>
+        </record>
+        <record model="res.user-res.group" id="user_admin_group_quotation_admin">
+            <field name="user" ref="res.user_admin"/>
+            <field name="group" ref="group_quotation_admin"/>
+        </record>
+
+        <record model="res.user-res.group" id="user_trigger_group_quotation">
+            <field name="user" ref="res.user_trigger"/>
+            <field name="group" ref="group_quotation"/>
+        </record>
+        <record model="res.user-res.group" id="user_trigger_group_quotation_admin">
+            <field name="user" ref="res.user_trigger"/>
+            <field name="group" ref="group_quotation_admin"/>
+        </record>
+
+        <record model="ir.ui.view" id="quote_master_view_form">
+            <field name="model">quotation.master</field>
+            <field name="type">form</field>
+            <field name="name">quote_master_form</field>
+        </record>
+        <record model="ir.ui.view" id="quote_master_view_tree">
+            <field name="model">quotation.master</field>
+            <field name="type">tree</field>
+            <field name="name">quote_master_tree</field>
+        </record>
+        <record model="ir.ui.view" id="quotation_view_form">
+            <field name="model">quotation.quotation</field>
+            <field name="type">form</field>
+            <field name="name">quotation_form</field>
+        </record>
+        <record model="ir.ui.view" id="quotation_view_tree">
+            <field name="model">quotation.quotation</field>
+            <field name="type">tree</field>
+            <field name="name">quotation_tree</field>
+        </record>
+        <record model="ir.ui.view" id="invoice_view_form">
+            <field name="model">account.invoice</field>
+            <field name="type">form</field>
+            <field name="name">invoice_form</field>
+        </record>
+        <record model="ir.ui.view" id="invoice_view_tree">
+            <field name="model">account.invoice</field>
+            <field name="type">tree</field>
+            <field name="name">invoice_tree</field>
+        </record>
+<!--
+        <record model="ir.ui.view" id="sale_view_tree">
+            <field name="model">sale.sale</field>
+            <field name="type">tree</field>
+            <field name="name">sale_tree</field>
+        </record>
+-->
+<!--
+        <record model="ir.ui.view" id="quotation_view_line_tree">
+            <field name="model">quotation.line</field>
+            <field name="type">tree</field>
+            <field name="name">quotation_line_tree</field>
+        </record>
+
+      <record model="ir.action.act_window" id="act_invoice_form">
+            <field name="name">Sales</field>
+            <field name="res_model">sale.sale</field>
+            <field name="domain">[('lines.origin.sale.id', 'in', Eval('active_ids'), 'sale.line')]</field>
+        </record>
+        <record model="ir.action.keyword"
+                id="act_open_sale_keyword1">
+            <field name="keyword">form_relate</field>
+            <field name="model">quotation.quotation,-1</field>
+            <field name="action" ref="act_invoice_form"/>
+        </record>
+-->
+        <record model="ir.action.act_window" id="act_quotation_form">
+            <field name="name">Quotations</field>
+            <field name="res_model">quotation.master</field>
+            <field name="search_value"></field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_quote_master_form_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="quote_master_view_tree"/>
+            <field name="act_window" ref="act_quotation_form"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_quote_master_form_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="quote_master_view_form"/>
+            <field name="act_window" ref="act_quotation_form"/>
+        </record>
+        <!--
+        <record model="ir.action.act_window.view" id="act_invoice_form_view1">
+            <field name="sequence" eval="30"/>
+            <field name="view" ref="invoice_view_tree"/>
+            <field name="act_window" ref="act_quotation_form"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_invoice_form_view2">
+            <field name="sequence" eval="40"/>
+            <field name="view" ref="invoice_view_form"/>
+            <field name="act_window" ref="act_quotation_form"/>
+        </record>
+-->
+        <!--
+        <record model="ir.action.act_window.view" id="act_quotation_list_view1">
+            <field name="sequence" eval="30"/>
+            <field name="view" ref="quotation_view_form"/>
+            <field name="act_window" ref="act_quotation_form"/>
+        </record>
+        -->
+        <record model="ir.action.act_window.domain" id="act_quotation_form_domain_draft">
+            <field name="name">Draft</field>
+            <field name="sequence" eval="10"/>
+            <field name="domain">[('state', '=', 'draft')]</field>
+            <field name="act_window" ref="act_quotation_form"/>
+        </record>
+
+        <record model="ir.action.act_window.domain" id="act_quotation_form_domain_quotation">
+            <field name="name">Quotation</field>
+            <field name="sequence" eval="20"/>
+            <field name="domain">[('state', '=', 'quotation')]</field>
+            <field name="act_window" ref="act_quotation_form"/>
+        </record>
+        <record model="ir.action.act_window.domain" id="act_quotation_form_domain_all">
+            <field name="name">All</field>
+            <field name="sequence" eval="9999"/>
+            <field name="domain"></field>
+            <field name="act_window" ref="act_quotation_form"/>
+        </record>
+
+        <menuitem parent="sale.menu_sale" action="act_quotation_form"
+            id="menu_quotation_form" sequence="20"/>
+        <record model="ir.ui.menu-res.group" id="menu_quotation_form_group_quotation">
+            <field name="menu" ref="menu_quotation_form"/>
+            <field name="group" ref="group_quotation"/>
+        </record>
+<!--
+        <record model="ir.action.act_window" id="act_quotation_sale_relate">
+            <field name="name">Quotations</field>
+            <field name="res_model">quotation.master</field>
+            <field name="domain">[('id', 'in', Eval('active_ids'))]</field>
+        </record>
+
+        <record model="ir.ui.view" id="quotation_view_tree">
+            <field name="model">quotation.quotation</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="10"/>
+            <field name="name">quotation_tree</field>
+        </record>
+
+       <record model="ir.ui.view" id="quotation_view_form">
+            <field name="model">quotation.quotation</field>
+            <field name="type">form</field>
+            <field name="name">quotation_form</field>
+        </record>
+        -->
+<!--
+        <record model="ir.action.act_window.view"
+            id="act_quotation_sale_relate_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="quotation_view_tree"/>
+            <field name="act_window" ref="act_quotation_sale_relate"/>
+        </record>
+        <record model="ir.action.act_window.view"
+            id="act_quotation_sale_relate_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="quotation_view_form"/>
+            <field name="act_window" ref="act_quotation_sale_relate"/>
+        </record>
+
+        <record model="ir.action.keyword"
+                id="act_quotation_sale_relate_keyword">
+            <field name="keyword">form_relate</field>
+            <field name="model">sale.sale,-1</field>
+            <field name="action" ref="act_quotation_sale_relate"/>
+        </record>
+
+        <record model="ir.model.access" id="access_quotation">
+            <field name="model" search="[('model', '=', 'quotation.quotation')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access" id="access_quotation_quotation">
+            <field name="model" search="[('model', '=', 'quotation.quotation')]"/>
+            <field name="group" ref="group_quotation"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+-->
+        <!-- should be in
+        <record model="ir.model.button" id="quotation_cancel_button">
+            <field name="name">cancel</field>
+            <field name="model" search="[('model', '=', 'quotation.master')]"/>
+        </record>
+        <record model="ir.model.button-res.group" id="quotation_cancel_button_group_quotation">
+            <field name="button" ref="quotation_cancel_button"/>
+            <field name="group" ref="group_quotation"/>
+        </record>
+
+        <record model="ir.model.button" id="quotation_draft_button">
+            <field name="name">draft</field>
+            <field name="model" search="[('model', '=', 'quotation.master')]"/>
+        </record>
+        <record model="ir.model.button-res.group" id="quotation_draft_button_group_quotation">
+            <field name="button" ref="quotation_draft_button"/>
+            <field name="group" ref="group_quotation"/>
+        </record>
+
+        <record model="ir.model.button" id="quotation_quotation_button">
+            <field name="name">quotation</field>
+            <field name="model" search="[('model', '=', 'quotation.master')]"/>
+        </record>
+        <record model="ir.model.button-res.group" id="quotation_quotation_button_group_quotation">
+            <field name="button" ref="quotation_quotation_button"/>
+            <field name="group" ref="group_quotation"/>
+        </record>
+
+        <record model="ir.model.button" id="quotation_confirm_button">
+            <field name="name">confirm</field>
+            <field name="model" search="[('model', '=', 'quotation.master')]"/>
+        </record>
+        <record model="ir.model.button-res.group" id="quotation_confirm_button_group_quotation">
+            <field name="button" ref="quotation_confirm_button"/>
+            <field name="group" ref="group_quotation"/>
+        </record>
+
+        <record model="ir.sequence.type" id="sequence_type_quotation">
+            <field name="name">Quotation</field>
+            <field name="code">quotation.master</field>
+        </record>
+        <record model="ir.sequence.type-res.group"
+            id="sequence_type_quotation_group_admin">
+            <field name="sequence_type" ref="sequence_type_quotation"/>
+            <field name="group" ref="res.group_admin"/>
+        </record>
+        <record model="ir.sequence.type-res.group"
+            id="sequence_type_quotation_group_quotation_admin">
+            <field name="sequence_type" ref="sequence_type_quotation"/>
+            <field name="group" ref="group_quotation_admin"/>
+        </record>
+
+        <record model="ir.sequence" id="sequence_quotation">
+            <field name="name">Quotation</field>
+            <field name="code">quotation.master</field>
+        </record>
+
+        <record model="ir.action.report" id="report_quotation">
+            <field name="name">Quotation</field>
+            <field name="model">quotation.quotation</field>
+            <field name="report_name">quotation.quotation</field>
+            <field name="report">quotation/quotation.odt</field>
+            <field name="style">company/header_A4.odt</field>
+        </record>
+        -->
+<!--
+        <record model="ir.action.keyword" id="report_quotation_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">quotation.quotation,-1</field>
+            <field name="action" ref="report_quotation"/>
+        </record>
+-->
+        <!-- Should be in
+        <record model="ir.ui.view" id="sale_line_view_form">
+            <field name="model">sale.line</field>
+            <field name="type">form</field>
+            <field name="name">sale_line_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_line_view_tree">
+            <field name="model">sale.line</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="10"/>
+            <field name="name">sale_line_tree</field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_line_view_tree_sequence">
+            <field name="model">sale.line</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="20"/>
+            <field name="name">sale_line_tree_sequence</field>
+        </record>
+
+        <record model="ir.model.access" id="access_sale_line">
+            <field name="model" search="[('model', '=', 'sale.line')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access" id="access_sale_line_sale">
+            <field name="model" search="[('model', '=', 'sale.line')]"/>
+            <field name="group" ref="group_quotation"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.ui.view" id="template_view_form">
+            <field name="model">product.template</field>
+            <field name="inherit" ref="product.template_view_form"/>
+            <field name="name">template_form</field>
+        </record>
+        <record model="ir.ui.view" id="template_view_tree">
+            <field name="model">product.template</field>
+            <field name="inherit" ref="product.template_view_tree"/>
+            <field name="name">template_tree</field>
+        </record>
+
+        <record model="ir.ui.view" id="party_view_form">
+            <field name="model">party.party</field>
+            <field name="inherit" ref="party.party_view_form"/>
+            <field name="name">party_form</field>
+        </record>
+        <record model="ir.action.wizard" id="act_open_customer">
+            <field name="name">Parties associated to Quotations</field>
+            <field name="wiz_name">sale.open_customer</field>
+        </record>
+        <menuitem name="Parties associated to Quotations"
+            parent="party.menu_party_form"
+            action="act_open_customer"
+            icon="tryton-list"
+            id="menu_customer"/>
+
+        <record model="ir.rule.group" id="rule_group_quotation">
+            <field name="model" search="[('model', '=', 'quotation.master')]"/>
+            <field name="global_p" eval="True"/>
+        </record>
+        <record model="ir.rule" id="rule_quotation1">
+            <field name="domain">[('company', '=', user.company.id if user.company else None)]</field>
+            <field name="rule_group" ref="rule_group_quotation"/>
+        </record>
+
+        <record model="ir.model.access" id="access_invoice_quotation">
+            <field name="model" search="[('model', '=', 'account.invoice')]"/>
+            <field name="group" ref="group_quotation"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_invoice_line_quotation">
+            <field name="model" search="[('model', '=', 'account.invoice.line')]"/>
+            <field name="group" ref="group_quotation"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access" id="access_move_group_quotation">
+            <field name="model" search="[('model', '=', 'stock.move')]"/>
+            <field name="group" ref="group_quotation"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+    -->
+    </data>
+</tryton>

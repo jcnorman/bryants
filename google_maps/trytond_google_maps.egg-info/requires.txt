@@ -1,0 +1,2 @@
+trytond_party >= 3.4, < 3.5
+trytond >= 3.4, < 3.5

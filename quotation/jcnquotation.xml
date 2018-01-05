@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<tryton>
+    <data>
+
+        <record model="res.group" id="group_quotation">
+            <field name="name">Quotations</field>
+        </record>
+        <record model="res.group" id="group_quotation_admin">
+            <field name="name">Quotations Administrator</field>
+        </record>
+
+        <record model="res.user-res.group" id="user_admin_group_quotation">
+            <field name="user" ref="res.user_admin"/>
+            <field name="group" ref="group_quotation"/>
+        </record>
+        <record model="res.user-res.group" id="user_admin_group_quotation_admin">
+            <field name="user" ref="res.user_admin"/>
+            <field name="group" ref="group_quotation_admin"/>
+        </record>
+
+        <record model="res.user-res.group" id="user_trigger_group_quotation">
+            <field name="user" ref="res.user_trigger"/>
+            <field name="group" ref="group_quotation"/>
+        </record>
+        <record model="res.user-res.group" id="user_trigger_group_quotation_admin">
+            <field name="user" ref="res.user_trigger"/>
+            <field name="group" ref="group_quotation_admin"/>
+        </record>
+
+        <menuitem name="Quotation"
+            id="menu_quotation" sequence="0" icon="tryton-preferences"/>
+        <record model="ir.ui.menu-res.group"
+            id="menu_quotation_group_quotation_admin">
+            <field name="menu" ref="menu_quotation"/>
+            <field name="group" ref="group_quotation_admin"/>
+        </record>
+
+        <record model="ir.ui.view" id="quotation_quotation_view_form">
+            <field name="model">quotation.quotation</field>
+            <field name="type">form</field>
+            <field name="name">quotation_form</field>
+        </record>
+        <record model="ir.action.act_window"
+                id="act_quotation_quotation_form">
+            <field name="name">Quotation</field>
+            <field name="res_model">quotation.quotation</field>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_quotation_quotation_view1">
+            <field name="sequence" eval="1"/>
+            <field name="view" ref="quotation_quotation_view_form"/>
+            <field name="act_window" ref="act_quotation_quotation_form"/>
+        </record>
+        <record model="ir.ui.view" id="quotation_quotation_view_tree">
+            <field name="model">quotation.quotation</field>
+            <field name="type">tree</field>
+            <field name="name">quotation_tree</field>
+        </record>
+        <record model="ir.action.act_window"
+                id="act_quotation_quotation_tree">
+            <field name="name">Quotation</field>
+            <field name="res_model">quotation.quotation</field>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_quotation_quotation_view2">
+            <field name="sequence" eval="2"/>
+            <field name="view" ref="quotation_quotation_view_tree"/>
+            <field name="act_window" ref="act_quotation_quotation_tree"/>
+        </record>
+        <menuitem parent="menu_quotation"
+            id="menu_quotation_quotation" icon="tryton-list"
+            action="act_quotation_quotation_form" sequence="10"/>
+
+    </data>
+</tryton>

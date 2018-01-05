@@ -1,0 +1,288 @@
+__author__ = 'jcnorman'
+
+from trytond.transaction import Transaction
+from trytond.pool import Pool, PoolMeta
+from trytond.model import ModelView, ModelSQL, Workflow, fields
+from trytond.pyson import Eval, If
+from trytond import backend
+from decimal import *
+
+__all__ = ['Quotation']
+__metaclass__ = PoolMeta
+
+class Quotation (Workflow, ModelSQL, ModelView):
+    'Quotation'
+    __name__ = 'quotation.quotation',
+    price_sqft = fields.Function(fields.Numeric('Rate per SqFt', digits=(16, 2)), 'on_change_with_price_sqft')
+    rate_sqft =fields.Numeric('Rate per SqFt of Deck', digits=(16,2))
+    rate_concrete =fields.Numeric('Rate per SqFt Concrete', digits=(16,2))
+    rate_step =fields.Numeric('Rate per step', digits=(16,2))
+    deck_length = fields.Numeric('Deck Length (Feet)', digits=(16, 0))
+    deck_width = fields.Numeric('Deck Width (Feet)', digits=(16, 0))
+    deck_surface = fields.Selection([
+            ('wood', 'Wood'),
+            ('composite', 'Composite'),
+            ('concrete', 'Concrete or Brick'),
+            ],
+        'Deck Surface'
+        )
+    steps = fields.Numeric('Steps', digits=(16, 0))
+    lattice_height = fields.Numeric('Lattice Height (Inches)',  digits=(16, 0),
+            states={
+                'invisible': Eval('deck_surface') == 'concrete'
+            })
+
+    deck_treatment = fields.Selection([
+        ('C&S', 'Clean & Seal'),
+        ('C', 'Clean Only'),
+        ('CCS', 'Clean & Clear Sealant')
+        ],
+        'Deck Treatment')
+    algae_removal = fields.Boolean('Algae Removal')
+    strip_color = fields.Boolean('Strip Color',
+            states={
+                'invisible': Eval('deck_surface') == 'concrete'
+            })
+    reapply_solid = fields.Boolean('Reapply Solid Stain',
+            states={
+                'invisible': Eval('deck_surface') == 'concrete'
+            })
+    reapply_2_tone = fields.Boolean('Reapply 2 Tone Stain',
+            states={
+                'invisible': Eval('deck_surface') == 'concrete'
+            })
+    wax = fields.Boolean('Wax',
+            states={
+                'invisible': Eval('deck_surface') != 'composite'
+            })
+    home_type = fields.Selection([
+        ('DT', 'Detached'),
+        ('TH', 'Townhome')
+    ],
+    'Home Type')
+    home_sqft = fields.Numeric('Home Sq Ft', digits=(16, 0))
+    wood_siding = fields.Boolean('Wood Siding')
+    townhouse_unit = fields.Selection([
+        ('middle', 'Middle Unit'),
+        ('end', 'End Unit'),
+    ], 'Townhouse Unit')
+    townhouse_levels = fields.Selection([
+        ('2', '2 Levels Front & Back'),
+        ('3', '3 Levels Front & Back'),
+        ('2/3', '2 Levels Front & 3 Levels Back')
+    ], 'Townhouse Levels')
+    fencing_posts = fields.Numeric('Fencing Posts', digits=(16, 0)),
+    fencing_height = fields.Numeric('Fence Height', digits=(16,0)),
+    fencing_sides = fields.Numeric('Fence Sides', digits=(16, 0)),
+    fencing_treatment = fields.Selection([
+        ('CS', 'Clean & Seal'),
+        ('C', 'Clean Only'),
+        ('S', 'Seal Only')
+    ], 'Fencing Treatment')
+    deck_sqft = fields.Function(fields.Numeric('Deck SqFt', digits=(16,0)), 'on_change_with_deck_sqft')
+    lattice_sqft = fields.Function(fields.Numeric('Lattice SqFt', digits=(16,0)), 'on_change_with_lattice_sqft')
+    algae_amount = fields.Function(fields.Numeric('Algae Amount', digits=(16,2)), 'on Change with_algae_removal')
+    strip_amount = fields.Function(fields.Numeric('Strip Amount', digits=(16,2)), 'on Change with_strip_amount')
+    solid_amount = fields.Function(fields.Numeric('Solid Amount', digits=(16,2)), 'on Change with_solid_amount')
+    tone2_amount = fields.Function(fields.Numeric('2 Tone Amount', digits=(16,2)), 'on Change with_tone2_amountl')
+    wax_amount   = fields.Function(fields.Numeric('Wax Amount', digits=(16,2)), 'on_change_with_wax_amount')
+    deck_amount  = fields.Function(fields.Numeric('Deck Amount', digits=(16,2)), 'on change with_deck_amount')
+    trmt_amount  = fields.Function(fields.Numeric('Treatment Amount', digits=(16,2)), 'on change with_trmt_amount')
+    home_amount  = fields.Function(fields.Numeric('Home Amount', digits=(16,2)), 'on change with_home_amount')
+    fence_sqft   = fields.Function(fields.Numeric('Fence SqFt', digits=(16,2)), 'on change with_fence_sqft')
+    fence_amount = fields.Function(fields.Numeric('Fence Amount', digits=(16,2)), 'on change with_fence_amount'),
+
+# Defaults
+    if rate_sqft == 0.0:
+        rate_sqft = 0.55
+    if rate_step == 0.0:
+        rate_step = 5.00
+    if rate_concrete == 0.0:
+        rate_concrete = 0.40
+
+    @field.depends(deck_length, deck_width)
+    def on_change_with_deck_sqft(self):
+            deck_sqft = (self.deck_length or Decimal('0.0')) * (self.deck_width or Decimal('0.0')) + \
+                        (Decimal(6.0) * self.deck_width) + (Decimal(3.0) * self.deck_length)
+            return round(deck_sqft)
+
+    @field.depends(deck_length, deck_width)
+    def on_change_with_lattice_sqft(self):
+        lattice_sqft = (self.lattice_height or Decimal('0.0')  + \
+                        (2.0 * self.deck_width) + self.deck_length)
+        return round(lattice_sqft)
+
+    @field.depends(deck_sqft, lattice_sqft, price_sqft, deck_steps, rate_step)
+    def on_change_with_deck_amount(self):
+        deck_amount = ((self.deck_sqft or Decimal('0.0')  + self.lattice_sqft or Decimal('0.0')) * self.price_sqft) + \
+                      (self.deck_steps * self.rate_step)
+        return round(deck_amount, 2),
+
+    @field.depends(deck_sqft)
+    def on_change_with_algae_amount(self):
+        if self.deck_sqft <= 580:    # 20x20 deck
+            algae_amount = 150
+        if self.deck_sqft <= 360:    # 15x15 deck
+            algae_amount = 125
+        if self.deck_sqft <= 252:    # 12x12 deck
+            algae_amount = 100
+        return round(algae_amount,2)
+
+    @field.depends(deck_sqft)
+    def on_change_with_strip_amountl(self):
+        if self.deck_sqft <= 580:
+            strip_amount = 275
+        if self.deck_sqft <= 360:
+            strip_amount = 200
+        if self.deck_sqft <= 252:
+            strip_amount = 150
+        return round(strip_amount,2)
+
+    @field.depends(deck_sqft)
+    def on_change_with_solid_amount(self):
+        if self.deck_sqft <= 580:
+            solid_amount = 400
+        if self.deck_sqft <= 360:
+            solid_amount = 250
+        if self.deck_sqft <= 252:
+            solid_amount = 300
+        return round(solid_amount,2)
+
+    @field.depends(deck_sqft)
+    def on_change_with_tone2_amount(self):
+        if self.deck_sqft <= 580:
+            tone2_amount = 800
+        if self.deck_sqft <= 360:
+            tone2_amount = 700
+        if self.deck_sqft <= 252:
+            tone2_amount = 600
+        return round(tone2_amount,2)
+
+    def on_change_with_wax_amount(self):
+        return 60.00
+
+    @field.depends(deck_surface, deck_treatment)
+    def on_change_with_trmt_amount(self):
+        if self.deck_surface == "composite":
+            if self.deck_treatment == "CS":
+                return 1.00
+            elif self.deck_treatment == "C":
+                return 0.75
+            elif self.deck_treatment == 'CCS':
+                return 1.25
+        else:
+            return 1.00
+
+    @fields.depends('deck_surface')
+    def on_change_with_price_sqft(self):
+        if self.deck_surface == 'concrete':
+            ratesqft = self.rate_concrete
+        else:
+            ratesqft = self.rate_sqft
+        return ratesqft
+
+    @field.depends(home_sqft, townhouse_unit, townhouse_levels)
+    def on_change_with_home_amount(self):
+        if self.home_type == 'DT':
+                if (self.home_sqft < 2500):
+                    home_amount = 209.00
+                elif (self.home_sqft < 3000):
+                    home_amount = 259.00
+                elif (self.home_sqft < 3500):
+                    home_amount = 309.00
+                elif (self.home_sqft < 4000):
+                    home_amount = 359.00
+                elif (self.home_sqft < 4500):
+                    home_amount = 409.00
+                elif (self.home_sqft < 5000):
+                    home_amount = 459.00
+                elif (self.home_sqft < 6000):
+                    home_amount = 559.00
+                if self.deck_sqft > 0:
+                    home_amount = home_amount * 0.75
+        elif self.home_type == 'TH':
+                if (self.townhouse_unit == 'middle'):
+                    if (self.townhouse_levels == '2'):
+                        home_amount = 125.00
+                    elif (self.townhouse_levels == '3'):
+                        home_amount = 170.00
+                    elif (self.townhouse_levels == '2/3'):
+                        home_amount = 165.00
+                elif (self.townhouse_unit == 'end'):
+                    if (self.townhouse_levels == '2'):
+                        home_amount = 165.00
+                    elif (self.townhouse_levels == '3'):
+                        home_amount = 185.00
+                    elif (self.townhouse_levels == '2/3'):
+                        home_amount = 185.00
+        return home_amount
+
+    @field.depends(fencing_posts, fencing_height, fencing_sides)
+    def on_change_with_fence_sqft(self):
+        fence_sqft = self.fencing_posts * 8.0 * self.fencing_height * self.fencing_sides
+        return fence_sqft
+
+    @depends(home_type, deck_sqft, fencing_treatment, fence_sqft, fencing_posts)
+    def on_change_with_fence_amount(self):
+        if self.home_type == 'DT':
+                if self.deck_sqft > 0:
+                    if self.fencing_treatment == 'CS':
+                            fence_amount = self.fence_sqft * 0.55
+                    elif self.fencing_treatment ==  'C':
+                            fence_amount = self.fence_sqft * 0.25
+                    elif self.fencing_treatment ==  'C':
+                            fence_amount = self.fence_sqft * 0.35
+                elif self.fencing_treatment == 'CS':
+                            fence_amount = (self.fence_sqft - 120) * 0.55 + 145.00
+                elif self.fencing_treatment == 'C':
+                            fence_amount = (self.fence_sqft - 120) * 0.20 + 65.00
+                elif self.fencing_treatment == 'S':
+                            fence_amount = (self.fence_sqft - 120) * 0.35 + 80.00
+        elif self.home_type == 'TH':
+                if self.fencing_posts > 0:
+                    if self.deck_sqft > 0:
+                        if self.fencing_treatment == 'CS':
+                                fence_amount = self.fence_sqft * 0.55
+                        elif self.fencing_treatment == 'C':
+                                fence_amount = self.fence_sqft * 0.25
+                        elif self.fencing_treatment == 'S':
+                                fence_amount = self.fence_sqft * 0.35
+                    else:
+                        if self.fencing_treatment == 'CS':
+                                fence_amount = (self.fence_sqft - 120) * 0.55 + 145.00
+                        elif self.fencing_treatment == 'C':
+                                fence_amount = (self.fence_sqft - 120) * 0.20 + 65.00
+                        elif self.fencing_treatment ==  'S':
+                                fence_amount = (self.fence_sqft - 120) * 0.35 + 80.00
+                else:
+                    if self.townhouse_unit == 'middle':
+                        if self.fencing_treatment == 'CS':
+                                fence_amount = 280.00
+                        elif self.fencing_treatment == 'C':
+                                fence_amount = 200.00
+                        elif self.fencing_treatment == 'S':
+                                fence_amount = 200.00
+                    else:
+                        if self.fencing_treatment == 'CS':
+                                fence_amount = 380.00
+                        elif self.fencing_treatment == 'C':
+                                fence_amount = 225.00
+                        elif self.fencing_treatment == 'S':
+                                fence_amount = 225.00
+
+    def get_amount(self, name):
+        if self.type == 'line':
+            return self.on_change_with_amount()
+        elif self.type == 'subtotal':
+            amount = Decimal('0.0')
+            for line2 in self.sale.lines:
+                if line2.type == 'line':
+                    amount += line2.sale.currency.round(
+                        Decimal(str(line2.quantity)) * line2.unit_price)
+                elif line2.type == 'subtotal':
+                    if self == line2:
+                        break
+                    amount = Decimal('0.0')
+            return amount
+        return Decimal('0.0')
+

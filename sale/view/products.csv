@@ -1,0 +1,44 @@
+id,create_uid,code,create_date,description,write_uid,template,active,write_date
+1,1,WDCS,2015-04-21 00:01:41.837491,"",1,1,t,2015-04-21 00:12:31.523739
+5,1,WAX,2015-04-21 00:14:42.155988,"",1,5,t,2015-04-21 00:14:57.579424
+4,1,CDCCS,2015-04-21 00:12:04.574948,"",1,4,t,2015-04-21 00:16:46.575083
+3,1,CDC,2015-04-21 00:09:28.128212,"",1,3,t,2015-04-21 00:17:07.184286
+6,1,Concrete,2015-04-21 00:19:07.014499,"",1,6,t,2015-04-21 00:19:31.139693
+7,1,SF2500,2015-04-21 00:22:18.787281,"",,7,t,
+39,1,PEFENCEENDCS,2015-04-21 12:03:20.574402,"",1,39,t,2015-04-21 12:05:54.727188
+8,1,SF3000,2015-04-21 00:27:19.533491,"",1,8,t,2015-04-21 00:30:03.595818
+9,1,SF3500,2015-04-21 00:29:24.086424,"",1,9,t,2015-04-21 00:30:25.67798
+12,1,SF5000,2015-04-21 00:34:20.492456,"",,12,t,
+11,1,SF4500,2015-04-21 00:33:02.870339,"",1,11,t,2015-04-21 00:34:33.641935
+10,1,SF4000,2015-04-21 00:31:44.618119,"",1,10,t,2015-04-21 00:34:44.260812
+13,1,SF6000,2015-04-21 00:36:17.982969,"",,13,t,
+14,1,THMID2,2015-04-21 00:37:53.557565,"",,14,t,
+15,1,THMID3,2015-04-21 00:39:16.231823,"",,15,t,
+16,1,THMID2/3,2015-04-21 00:40:14.931288,"",,16,t,
+17,1,THEND2,2015-04-21 00:41:07.35407,"",,17,t,
+18,1,THEND3,2015-04-21 00:42:26.327135,"",,18,t,
+19,1,GUTTER,2015-04-21 00:45:06.014843,"",,19,t,
+23,1,LATTICE,2015-04-21 00:58:42.856459,"",,23,t,
+37,1,PETHFENCEMIDC,2015-04-21 12:00:11.368413,"",1,37,t,2015-04-21 12:07:24.262439
+28,1,STRIPM,2015-04-21 01:07:47.347678,"",,28,t,
+29,1,STRIPL,2015-04-21 01:08:51.649698,"",,29,t,
+38,1,PETHFENCEMIDS,2015-04-21 12:01:15.164577,"",1,38,t,2015-04-21 12:07:40.642364
+31,1,SOLIDM,2015-04-21 01:18:28.617399,"We ccannot Strip Solids - We have to re-apply them and customer must supply paint. If ther are steps, lattice, etc. theree is an additional charge.",1,31,t,2015-04-21 01:24:47.705711
+32,1,SOLIDL,2015-04-21 01:19:19.701634,"We ccannot Strip Solids - We have to re-apply them and customer must supply paint. If ther are steps, lattice, etc. theree is an additional charge.",1,32,t,2015-04-21 01:24:56.975475
+36,1,PETHFENCEMIDCS,2015-04-21 11:59:04.714331,Use only if they don't know number of posts - we will re-evaluate at service time,1,36,t,2015-04-21 12:08:12.33238
+33,1,SOLID2S,2015-04-21 01:21:47.611361,"We ccannot Strip Solids - We have to re-apply them and customer must supply paint. If ther are steps, lattice, etc. theree is an additional charge.",1,33,t,2015-04-21 01:25:06.976307
+41,1,PETHFENCEENDS,2015-04-21 12:10:28.767126,"",,41,t,
+34,1,SOLID2M,2015-04-21 01:22:42.137688,"We ccannot Strip Solids - We have to re-apply them and customer must supply paint. If ther are steps, lattice, etc. theree is an additional charge.",1,34,t,2015-04-21 01:25:19.024067
+40,1,PETHFENCEENDC,2015-04-21 12:05:34.410869,"",1,40,t,2015-04-21 12:11:16.836045
+26,1,ALGAEL,2015-04-21 01:04:10.714692,"",1,26,t,2015-04-21 02:39:47.345366
+25,1,ALGAEM,2015-04-21 01:02:55.342915,"",1,25,t,2015-04-21 02:39:58.88107
+2,1,STEPS,2015-04-21 00:03:29.989789,"",1,2,t,2015-04-26 22:50:02.220873
+20,1,FENCINGC&S,2015-04-21 00:49:08.532696,"",1,20,t,2015-04-26 22:50:37.827559
+21,1,FENCINGC,2015-04-21 00:51:56.27521,"",1,21,t,2015-04-26 22:50:49.033182
+22,1,FENCINGS,2015-04-21 00:53:28.89295,"",1,22,t,2015-04-26 22:50:58.29117
+27,1,STRIP,2015-04-21 01:06:00.701133,"We do not charge for labor, only materials",1,27,t,2015-04-26 22:51:54.31813
+30,1,SOLID,2015-04-21 01:17:17.081853,"We ccannot Strip Solids - We have to re-apply them and customer must supply paint. If ther are steps, lattice, etc. theree is an additional charge.",1,30,t,2015-04-26 22:52:23.172977
+35,1,SOLID2,2015-04-21 01:23:54.893487,"We ccannot Strip Solids - We have to re-apply them and customer must supply paint. If ther are steps, lattice, etc. theree is an additional charge.",1,35,t,2015-04-26 22:53:02.31189
+24,1,ALGAES,2015-04-21 01:01:06.771756,"",1,24,t,2015-04-29 22:36:28.242063
+42,1,ALGAEM,2015-04-29 22:37:57.352768,"",,42,t,
+43,1,ALGAEL,2015-04-29 22:38:35.826888,"",1,43,t,2015-04-29 22:39:27.906169

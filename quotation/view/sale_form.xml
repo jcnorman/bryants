@@ -1,0 +1,10 @@
+__author__ = 'jcnorman'
+
+<?xml version="1.0"?>
+
+<data>
+    <xpath expr="<//field[1]>">
+           <label name="delivery_date"/>
+           <field name="delivery_date"/>
+    </xpath>
+</data>

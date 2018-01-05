@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<tree string="Quotations">
+    <field name="quote_date"/>
+    <field name="party"/>
+    <field name="reference" expand="1"/>
+</tree>
